@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idea Crowdsourcing and Voting</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            color: #333;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 600px;
+            max-width: 90%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        button {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(to left, #ff7e5f, #feb47b);
+            transform: scale(1.05);
+        }
+
+        .idea-list {
+            margin-top: 20px;
+        }
+
+        .idea-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .idea-card h3 {
+            margin: 0;
+        }
+
+        .idea-card p {
+            margin: 5px 0;
+        }
+
+        .vote-buttons {
+            margin-top: 10px;
+        }
+
+        .vote-buttons button {
+            display: inline-block;
+            width: 48%;
+            margin: 5px 1%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Idea Crowdsourcing and Voting</h1>
+        <form id="ideaForm">
+            <input type="text" id="ideaTitle" placeholder="Enter your idea title" required>
+            <textarea id="ideaDescription" rows="4" placeholder="Describe your idea" required></textarea>
+            <button type="submit">Submit Idea</button>
+        </form>
+
+        <div class="idea-list" id="ideaList">
+            <h2>Submitted Ideas</h2>
+        </div>
+    </div>
+
+    <script>
+        const ideaForm = document.getElementById('ideaForm');
+        const ideaList = document.getElementById('ideaList');
+
+        ideaForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const title = document.getElementById('ideaTitle').value;
+            const description = document.getElementById('ideaDescription').value;
+
+            // Create Idea Card
+            const ideaCard = document.createElement('div');
+            ideaCard.classList.add('idea-card');
+            ideaCard.innerHTML = `
+                <h3>${title}</h3>
+                <p>${description}</p>
+                <p>Votes: <span class="vote-count">0</span></p>
+                <div class="vote-buttons">
+                    <button onclick="vote(this, 1)">👍 Upvote</button>
+                    <button onclick="vote(this, -1)">👎 Downvote</button>
+                </div>
+            `;
+
+            ideaList.appendChild(ideaCard);
+
+            // Clear the form
+            document.getElementById('ideaTitle').value = '';
+            document.getElementById('ideaDescription').value = '';
+        });
+
+        function vote(button, change) {
+            const voteCount = button.closest('.idea-card').querySelector('.vote-count');
+            voteCount.textContent = parseInt(voteCount.textContent) + change;
+        }
+    </script>
+</body>
+
+</html>

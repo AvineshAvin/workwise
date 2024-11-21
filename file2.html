@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Messaging & File Sharing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f5d0c5, #f7f0a8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #0077b6;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 15px;
+            background: #e6f7ff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section:nth-child(even) {
+            background: #ffefd5;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #0077b6;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #005f8d;
+        }
+
+        #private-chat-window {
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f1f5f8;
+        }
+
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .message.sent {
+            background-color: #caffbf;
+            text-align: right;
+        }
+
+        .message.received {
+            background-color: #ffadad;
+            text-align: left;
+        }
+
+        #shared-files div {
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #ffd6a5;
+            border-radius: 8px;
+        }
+
+        #shared-files a {
+            color: #0077b6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #shared-files a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Private Messaging & File Sharing</h2>
+
+        <!-- Private Messaging Module -->
+        <div class="section" id="private-chat-module">
+            <h3>Private Messaging</h3>
+            <select id="user-select">
+                <option value="">Select User</option>
+            </select>
+            <input type="text" id="private-message-input" placeholder="Type a private message">
+            <button onclick="sendPrivateMessage()">Send Private Message</button>
+            <div id="private-chat-window"></div>
+        </div>
+
+        <!-- File Sharing Module -->
+        <div class="section" id="file-sharing-module">
+            <h3>File Sharing</h3>
+            <input type="file" id="file-input">
+            <button onclick="shareFile()">Share File</button>
+            <div id="shared-files"></div>
+        </div>
+    </div>
+
+    <script>
+        // Sample users for private messaging
+        let users = { "Avinesh": [], "Hariprasnth": [], "Rithik": [] };
+        let currentUser = "You";
+
+        // Populate the user select dropdown
+        const userSelect = document.getElementById('user-select');
+        function populateUserSelect() {
+            for (let user in users) {
+                const option = document.createElement('option');
+                option.value = user;
+                option.textContent = user;
+                userSelect.appendChild(option);
+            }
+        }
+        populateUserSelect();
+
+        // Private Messaging
+        const privateChatWindow = document.getElementById('private-chat-window');
+        function sendPrivateMessage() {
+            const recipient = userSelect.value;
+            const message = document.getElementById('private-message-input').value;
+            if (recipient && message) {
+                // Add message to recipient's chat history
+                users[recipient].push({ sender: currentUser, message });
+
+                // Display the message in the chat window
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message sent';
+                messageDiv.textContent = `To ${recipient}: ${message}`;
+                privateChatWindow.appendChild(messageDiv);
+
+                // Clear the input
+                document.getElementById('private-message-input').value = '';
+            }
+        }
+
+        // File Sharing
+        function shareFile() {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+            if (file) {
+                const sharedFiles = document.getElementById('shared-files');
+
+                // Create a new file div with a download link
+                const fileDiv = document.createElement('div');
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(file);
+                link.textContent = `Download: ${file.name}`;
+                link.download = file.name;
+                fileDiv.appendChild(link);
+                sharedFiles.appendChild(fileDiv);
+
+                // Reset the file input
+                fileInput.value = '';
+            }
+        }
+    </script>
+</body>
+
+</html>

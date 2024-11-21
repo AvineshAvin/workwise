@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Management</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            color: #333;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 700px;
+            max-width: 90%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            -webkit-background-clip: text;
+            color: transparent;
+            font-size: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border: 1px solid #6a11cb;
+            box-shadow: 0 0 5px rgba(106, 17, 203, 0.5);
+        }
+
+        button {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(to left, #6a11cb, #2575fc);
+            transform: scale(1.05);
+        }
+
+        .project-list {
+            margin-top: 20px;
+        }
+
+        .project-card {
+            background: linear-gradient(120deg, #f6d365, #fda085);
+            color: #333;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-card h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        .project-card p {
+            margin: 5px 0;
+            font-size: 1rem;
+        }
+
+        .project-card p span {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Project Management</h1>
+
+        <!-- Ongoing and Future Project Form -->
+        <div class="section">
+            <label for="projectType">Project Type:</label>
+            <select id="projectType">
+                <option value="Ongoing">Ongoing</option>
+                <option value="Future">Future</option>
+            </select>
+
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName" placeholder="Enter project name" required>
+
+            <label for="tasksToDo">Tasks To Do:</label>
+            <textarea id="tasksToDo" rows="3" placeholder="List tasks to do" required></textarea>
+
+            <label for="tasksNotToDo">Tasks Not To Do:</label>
+            <textarea id="tasksNotToDo" rows="3" placeholder="List tasks not to do"></textarea>
+
+            <label for="deadline">Deadline:</label>
+            <input type="date" id="deadline" required>
+
+            <label for="contacts">Choose Contacts:</label>
+            <select id="contacts" multiple>
+                <option value="Avinesh">John Doe</option>
+                <option value="Hariprasaanth">Jane Smith</option>
+                <option value="Rithik">Mike Brown</option>
+                <option value="lokesh">Emily Davis</option>
+            </select>
+
+            <button id="addProjectBtn">Add Project</button>
+        </div>
+
+        <!-- Project List -->
+        <div class="project-list">
+            <h2>Project List</h2>
+            <div id="projectContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript Code
+
+        const addProjectBtn = document.getElementById('addProjectBtn');
+        const projectContainer = document.getElementById('projectContainer');
+
+        // Handle adding a project
+        addProjectBtn.addEventListener('click', () => {
+            const projectType = document.getElementById('projectType').value;
+            const projectName = document.getElementById('projectName').value;
+            const tasksToDo = document.getElementById('tasksToDo').value;
+            const tasksNotToDo = document.getElementById('tasksNotToDo').value;
+            const deadline = document.getElementById('deadline').value;
+            const contacts = Array.from(document.getElementById('contacts').selectedOptions).map(opt => opt.value);
+
+            if (!projectName || !tasksToDo || !deadline) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Create project card
+            const projectCard = document.createElement('div');
+            projectCard.classList.add('project-card');
+
+            projectCard.innerHTML = `
+                <h3>${projectType} Project: ${projectName}</h3>
+                <p><span>Tasks To Do:</span> ${tasksToDo}</p>
+                <p><span>Tasks Not To Do:</span> ${tasksNotToDo || 'N/A'}</p>
+                <p><span>Deadline:</span> ${deadline}</p>
+                <p><span>Contacts:</span> ${contacts.join(', ') || 'None Selected'}</p>
+            `;
+
+            // Add project card to the project list
+            projectContainer.appendChild(projectCard);
+
+            // Clear form fields
+            document.getElementById('projectName').value = '';
+            document.getElementById('tasksToDo').value = '';
+            document.getElementById('tasksNotToDo').value = '';
+            document.getElementById('deadline').value = '';
+            document.getElementById('contacts').value = '';
+        });
+    </script>
+</body>
+
+</html>
